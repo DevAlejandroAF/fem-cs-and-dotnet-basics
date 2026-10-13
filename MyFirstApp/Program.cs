@@ -1,4 +1,6 @@
-﻿internal class Program
+﻿using System.Collections;
+
+internal class Program
 {
   private static void Main(string[] args)
   {
@@ -48,6 +50,11 @@
     int[] fixedArray = new int[5];
     int[] nums = [1, 2, 3];
     string[] fruits;
+    ArrayList arrayList = new ArrayList();
+    var list = new List<string>();
+    List<int> numbersList = new List<int> { 1, 2, 3 };
+    List<int> numbersList2 = [1, 2, 3];
+    var dict = new Dictionary<string, int>();
 
 
     // Date
@@ -191,6 +198,18 @@
     var tryParse = int.TryParse(textBox, out ageParse); // the variable can be declare in the result
 
     /*
+     * Local Functions
+     */
+
+    int Add(int x, int y)
+    {
+      return x + y;
+    }
+
+    // Lambda
+    Func<int, int, int> Add2 = (x, y) => x + y; // <parameter types..., return type>
+
+    /*
      * Print
      */
 
@@ -261,5 +280,115 @@
       return true;
     }
     return false;
+  }
+
+  /*
+   * Classes
+   */
+
+  public class Person
+  {
+    public string Name { get; } // inmutable property (no set)
+    public string LastName { get; private set; } // mutable inside class property (private set)
+    public int Age { get; set; } // Mutable property
+    public string FullName => $"{Name} {LastName}"; // Computed property
+
+    // Constructor
+    public Person(string name, string lastName)
+    {
+      if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(lastName))
+      {
+        throw new ArgumentException("Name or LastName cannot be null or empty");
+      }
+      Name = name;
+      LastName = lastName;
+    }
+
+    public Person(string name, string lastName, int age) : this(name, lastName) // Call the other constructor with two properties
+    {
+      Age = age;
+    }
+
+    // Methods
+    public void SetLastName(string lastName)
+    {
+      LastName = lastName;
+    }
+  }
+
+  // Inheritance
+  public class BaseEmployee
+  {
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+
+    public virtual string GetEmployeeDetails() // To override a method is necessary the virtual keyword, and sealed keyword is used to avoid override in other classes
+    {
+      return $"{FirstName} {LastName}";
+    }
+  }
+
+  public class Employee : BaseEmployee
+  {
+    public decimal HourlyRate { get; set; }
+
+    public Employee(decimal hourlyRate)
+    {
+      HourlyRate = hourlyRate;
+    }
+
+    public decimal CalculateWeeklyPay(int hoursWorked)
+    {
+      return HourlyRate * hoursWorked;
+    }
+
+    public override string GetEmployeeDetails()
+    {
+      return base.GetEmployeeDetails() + $" - rate {HourlyRate}";
+    }
+  }
+
+  /*
+   * Like Java in C# exists abstracts classes to implement abstracts methods
+   */
+
+  /*
+   * Interfaces
+   */
+
+  public interface IDatabase // Interfaces must start with capital I
+  {
+    void Connect();
+    void Disconnect();
+    bool IsConnected { get; }
+  }
+
+  public class MicrosoftSqlServerDatabase : IDatabase
+  {
+    public bool IsConnected { get; private set; }
+
+    public void Connect()
+    {
+      // ...
+      IsConnected = true;
+    }
+
+    public void Disconnect()
+    {
+      // ...
+      IsConnected = false;
+    }
+  }
+
+  /*
+   * Generics
+   */
+
+  public class Utilities
+  {
+    public T GetDefaultValue<T>()
+    {
+      return default(T);
+    }
   }
 }
