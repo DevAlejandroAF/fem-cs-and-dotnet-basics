@@ -219,6 +219,19 @@ internal class Program
     Console.WriteLine(Math.AddNumbers(1, 2, 3, 4));
     PrintMessage("Hi!");
     Console.WriteLine(IsEven(4));
+
+    /*
+     * Async call
+     */
+
+    /*
+     * // main class
+     * private static async Task Main(string[] args)
+     * {
+     *  var data = await GetDataFromServerAsync();
+     *  Console.WriteLine(data);
+     * }
+     */
   }
 
   // Enums
@@ -390,5 +403,25 @@ internal class Program
     {
       return default(T);
     }
+  }
+
+  /*
+   * Asynchronous
+   */
+
+  public static async Task<string> GetDataFromServerAsync()
+  {
+    var client = new HttpClient();
+    string result = await client.GetStringAsync("https://example.com");
+    return result; // To return void: just Task (without the type) in the function definition and remove this return
+
+    /*
+     * // Similar to promise.all()
+     *
+     * var task1 = client.GetStringAsync("...");
+     * var task2 = client.GetStringAsync("...");
+     *
+     * await Task.WhenAll(task1, task2);
+     */
   }
 }
